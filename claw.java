@@ -27,7 +27,10 @@ public class claw extends LinearOpMode {
     DcMotor motor;
     boolean wheelon = false;
     boolean clawon = false;
+    double chassis_speed = 1;
     double x2;
+    double lefttrig;
+    double righttrig;
     // x is value of wheels, back is -x,  y+x y-x
     //Creating another motor
     DcMotor frontLeft;
@@ -53,6 +56,8 @@ public class claw extends LinearOpMode {
             a1 = gamepad2.left_bumper;
             a2 = gamepad2.a;
             b2 = gamepad2.b;
+            lefttrig = gamepad1.left_trigger;
+            righttrig = gamepad1.right_trigger;
 
             //Opening/closing claw
             if(a1){
@@ -63,6 +68,12 @@ public class claw extends LinearOpMode {
             } else{
                 //This made sure that the power of the motor is not affected and aimed to reduce stuttering
                 motor1.setPower(0);
+            }
+            
+            if(lefttrig >= 0.5){
+                chassis_speed = 0.25;
+            }else if(righttrig >= 0.5){
+                chassis_speed = 1;
             }
             //Moves lift based on button
             if(a2){
@@ -121,20 +132,20 @@ public class claw extends LinearOpMode {
             //backRight.setPower(Range.clip(y + (0.5 * x), -1.0, 1.0));
             //Moving robot based on controller inputs as numbers
             if(abs(x) > abs(y) && abs(x) > abs(x2)){
-                frontLeft.setPower(Range.clip(-x, -1.0, 1.0));
-                frontRight.setPower(Range.clip(-x, -1.0, 1.0));
-                backLeft.setPower(Range.clip(-x, -1.0, 1.0));
-                backRight.setPower(Range.clip(-x, -1.0, 1.0));
+                frontLeft.setPower(Range.clip(-x*chassis_speed, -1.0, 1.0));
+                frontRight.setPower(Range.clip(-x*chassis_speed, -1.0, 1.0));
+                backLeft.setPower(Range.clip(-x*chassis_speed, -1.0, 1.0));
+                backRight.setPower(Range.clip(-x*chassis_speed, -1.0, 1.0));
             } else if(abs(y) > abs(x) && abs(y) > abs(x2)){
-                frontLeft.setPower(Range.clip(y, -1.0, 1.0));
-                frontRight.setPower(Range.clip(-y, -1.0, 1.0));
-                backLeft.setPower(Range.clip(y, -1.0, 1.0));
-                backRight.setPower(Range.clip(-y, -1.0, 1.0));
+                frontLeft.setPower(Range.clip(y*chassis_speed, -1.0, 1.0));
+                frontRight.setPower(Range.clip(-y*chassis_speed, -1.0, 1.0));
+                backLeft.setPower(Range.clip(y*chassis_speed, -1.0, 1.0));
+                backRight.setPower(Range.clip(-y*chassis_speed, -1.0, 1.0));
             } else if(abs(x2) > abs(x) && abs(x2) > abs(y)){
-                frontLeft.setPower(Range.clip(-x2, -1.0, 1.0));
-                frontRight.setPower(Range.clip(-x2, -1.0, 1.0));
-                backLeft.setPower(Range.clip(x2, -1.0, 1.0));
-                backRight.setPower(Range.clip(x2, -1.0, 1.0));
+                frontLeft.setPower(Range.clip(-x2*chassis_speed, -1.0, 1.0));
+                frontRight.setPower(Range.clip(-x2*chassis_speed, -1.0, 1.0));
+                backLeft.setPower(Range.clip(x2*chassis_speed, -1.0, 1.0));
+                backRight.setPower(Range.clip(x2*chassis_speed, -1.0, 1.0));
             }else{
                 //This made sure that the power of the motors are not affected and aimed to reduce stuttering
                 frontLeft.setPower(0);
